@@ -199,7 +199,7 @@ public class InMemoryDelayedDeliveryTracker implements DelayedDeliveryTracker, T
 
         synchronized (dispatcher) {
             currentTimeoutTarget = -1;
-            timeout = null;
+            this.timeout = null;
             dispatcher.readMoreEntries();
         }
     }
