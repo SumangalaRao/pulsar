@@ -35,6 +35,7 @@ import org.apache.pulsar.broker.service.Producer;
 import org.apache.pulsar.broker.service.ServerCnx;
 import org.apache.pulsar.broker.service.Subscription;
 import org.apache.pulsar.broker.service.Topic;
+import org.apache.pulsar.broker.service.TransportCnx;
 import org.apache.pulsar.common.api.proto.BaseCommand;
 import org.apache.pulsar.common.api.proto.CommandAck;
 import org.apache.pulsar.common.api.proto.MessageMetadata;
@@ -93,6 +94,14 @@ public class BrokerInterceptorWithClassLoader implements BrokerInterceptor {
     public void messageAcked(ServerCnx cnx, Consumer consumer,
                              CommandAck ackCmd) {
         this.interceptor.messageAcked(cnx, consumer, ackCmd);
+    }
+
+    @Override
+    public void nAckMessage(TransportCnx cnx, Map<String, String> metadata,
+                            String topic, Subscription subscription, String consumerName,
+                            long consumerId, int totalRedeliveryMessageCount, long ledgerId, long entryId){
+        this.interceptor.nAckMessage(cnx, metadata, topic, subscription,
+                consumerName, consumerId,  totalRedeliveryMessageCount, ledgerId, entryId);
     }
 
     @Override

@@ -867,6 +867,8 @@ public class Consumer {
                         batchSize);
                 totalRedeliveryMessages.add(unAckedCount);
                 pendingPositions.add(new PositionImpl(ledgerId, entryId));
+                cnx.getBrokerService().getInterceptor().nAckMessage(cnx, metadata, topicName, subscription,
+                        consumerName, consumerId, totalRedeliveryMessages.intValue(), ledgerId, entryId);
             });
 
             for (PositionImpl p : pendingPositions) {
@@ -894,6 +896,8 @@ public class Consumer {
                 totalRedeliveryMessages += unAckedCount;
                 pendingPositions.add(position);
             }
+            cnx.getBrokerService().getInterceptor().nAckMessage(cnx, metadata, topicName, subscription,
+                    consumerName, consumerId, totalRedeliveryMessages, msg.getLedgerId(), msg.getEntryId());
         }
 
         addAndGetUnAckedMsgs(this, -totalRedeliveryMessages);
