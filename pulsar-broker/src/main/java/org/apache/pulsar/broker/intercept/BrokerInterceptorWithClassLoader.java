@@ -85,8 +85,8 @@ public class BrokerInterceptorWithClassLoader implements BrokerInterceptor {
 
     @Override
     public  void messageDispatched(ServerCnx cnx, Consumer consumer, long ledgerId,
-                                   long entryId, ByteBuf headersAndPayload) {
-        this.interceptor.messageDispatched(cnx, consumer, ledgerId, entryId, headersAndPayload);
+                                   long entryId, ByteBuf headersAndPayload, int redelvieryCount) {
+        this.interceptor.messageDispatched(cnx, consumer, ledgerId, entryId, headersAndPayload, redelvieryCount);
     }
 
     @Override

@@ -100,9 +100,9 @@ public class CounterBrokerInterceptor implements BrokerInterceptor {
 
     @Override
     public void messageDispatched(ServerCnx cnx, Consumer consumer, long ledgerId,
-                                   long entryId, ByteBuf headersAndPayload) {
-        log.info("Message dispatched topic={}, consumer={}",
-            consumer.getSubscription().getTopic().getName(), consumer.consumerName());
+                                   long entryId, ByteBuf headersAndPayload, int redeliveryCount) {
+        log.info("Message dispatched topic={}, consumer={} redeliveryCount={}",
+            consumer.getSubscription().getTopic().getName(), consumer.consumerName(), redeliveryCount);
         messageDispatchCount++;
     }
 
