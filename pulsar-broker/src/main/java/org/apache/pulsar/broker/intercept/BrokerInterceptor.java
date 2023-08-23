@@ -32,6 +32,7 @@ import org.apache.pulsar.broker.service.Producer;
 import org.apache.pulsar.broker.service.ServerCnx;
 import org.apache.pulsar.broker.service.Subscription;
 import org.apache.pulsar.broker.service.Topic;
+import org.apache.pulsar.broker.service.TransportCnx;
 import org.apache.pulsar.common.api.proto.BaseCommand;
 import org.apache.pulsar.common.api.proto.CommandAck;
 import org.apache.pulsar.common.api.proto.MessageMetadata;
@@ -175,6 +176,20 @@ public interface BrokerInterceptor extends AutoCloseable {
      */
     default void messageAcked(ServerCnx cnx, Consumer consumer,
                               CommandAck ackCmd) {
+    }
+
+    /**
+     * Intercept when a negative message ack is recieved.
+     *
+     * @param cnx Transport Connection
+     * @param metadata Consumer metadata
+     * @param ledgerId Ledger ID
+     * @param entryId Entry ID
+     *
+     */
+    default void nAckMessage(TransportCnx cnx, Map<String, String> metadata,
+                             String topic, Subscription subscription, String consumerName,
+                             long consumerId, int totalRedeliveryMessageCount, long ledgerId, long entryId){
     }
 
     /**

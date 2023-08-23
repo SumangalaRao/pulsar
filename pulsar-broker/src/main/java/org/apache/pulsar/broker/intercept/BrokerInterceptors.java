@@ -35,6 +35,7 @@ import org.apache.pulsar.broker.service.Producer;
 import org.apache.pulsar.broker.service.ServerCnx;
 import org.apache.pulsar.broker.service.Subscription;
 import org.apache.pulsar.broker.service.Topic;
+import org.apache.pulsar.broker.service.TransportCnx;
 import org.apache.pulsar.common.api.proto.BaseCommand;
 import org.apache.pulsar.common.api.proto.CommandAck;
 import org.apache.pulsar.common.api.proto.MessageMetadata;
@@ -205,6 +206,22 @@ public class BrokerInterceptors implements BrokerInterceptor {
             }
         }
     }
+
+    @Override
+    public void nAckMessage(TransportCnx cnx, Map<String, String> metadata,
+                            String topic, Subscription subscription, String consumerName,
+                            long consumerId, int totalRedeliveryMessageCount, long ledgerId, long entryId) {
+        BrokerInterceptor.super.nAckMessage(cnx, metadata, topic, subscription,
+                consumerName, consumerId,  totalRedeliveryMessageCount, ledgerId, entryId);
+        if (interceptors == null || interceptors.isEmpty()) {
+            return;
+        }
+        for (BrokerInterceptorWithClassLoader value : interceptors.values()) {
+            value.nAckMessage(cnx, metadata, topic, subscription,
+                    consumerName, consumerId,  totalRedeliveryMessageCount, ledgerId, entryId);
+        }
+    }
+
 
     @Override
     public void txnOpened(long tcId, String txnID) {
