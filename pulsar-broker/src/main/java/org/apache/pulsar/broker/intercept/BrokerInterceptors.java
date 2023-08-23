@@ -213,12 +213,11 @@ public class BrokerInterceptors implements BrokerInterceptor {
                             long consumerId, int totalRedeliveryMessageCount, long ledgerId, long entryId) {
         BrokerInterceptor.super.nAckMessage(cnx, metadata, topic, subscription,
                 consumerName, consumerId,  totalRedeliveryMessageCount, ledgerId, entryId);
-        if (interceptors == null || interceptors.isEmpty()) {
-            return;
-        }
-        for (BrokerInterceptorWithClassLoader value : interceptors.values()) {
-            value.nAckMessage(cnx, metadata, topic, subscription,
-                    consumerName, consumerId,  totalRedeliveryMessageCount, ledgerId, entryId);
+        if (interceptorsEnabled()) {
+            for (BrokerInterceptorWithClassLoader value : interceptors.values()) {
+                value.nAckMessage(cnx, metadata, topic, subscription,
+                        consumerName, consumerId, totalRedeliveryMessageCount, ledgerId, entryId);
+            }
         }
     }
 

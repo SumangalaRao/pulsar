@@ -150,8 +150,10 @@ public class BrokerInterceptorWithClassLoader implements BrokerInterceptor {
     public void nAckMessage(TransportCnx cnx, Map<String, String> metadata,
                             String topic, Subscription subscription, String consumerName,
                             long consumerId, int totalRedeliveryMessageCount, long ledgerId, long entryId){
-        this.interceptor.nAckMessage(cnx, metadata, topic, subscription,
-                consumerName, consumerId,  totalRedeliveryMessageCount, ledgerId, entryId);
+        try (ClassLoaderSwitcher ignored = new ClassLoaderSwitcher(classLoader)) {
+            this.interceptor.nAckMessage(cnx, metadata, topic, subscription,
+                    consumerName, consumerId, totalRedeliveryMessageCount, ledgerId, entryId);
+        }
     }
 
     @Override

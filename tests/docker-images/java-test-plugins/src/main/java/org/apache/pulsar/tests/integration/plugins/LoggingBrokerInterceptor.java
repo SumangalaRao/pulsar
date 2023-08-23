@@ -26,11 +26,7 @@ import javax.servlet.ServletResponse;
 import org.apache.bookkeeper.mledger.Entry;
 import org.apache.pulsar.broker.PulsarService;
 import org.apache.pulsar.broker.intercept.BrokerInterceptor;
-import org.apache.pulsar.broker.service.Consumer;
-import org.apache.pulsar.broker.service.Producer;
-import org.apache.pulsar.broker.service.ServerCnx;
-import org.apache.pulsar.broker.service.Subscription;
-import org.apache.pulsar.broker.service.Topic;
+import org.apache.pulsar.broker.service.*;
 import org.apache.pulsar.common.api.proto.BaseCommand;
 import org.apache.pulsar.common.api.proto.CommandAck;
 import org.apache.pulsar.common.api.proto.MessageMetadata;
@@ -109,6 +105,13 @@ public class LoggingBrokerInterceptor implements BrokerInterceptor {
     @Override
     public void messageAcked(ServerCnx cnx, Consumer consumer, CommandAck ackCmd) {
         log.info("messageAcked");
+    }
+
+    @Override
+    public void nAckMessage(TransportCnx cnx, Map<String, String> metadata,
+                            String topic, Subscription subscription, String consumerName,
+                            long consumerId, int totalRedeliveryMessageCount, long ledgerId, long entryId){
+        log.info("nAckMessage recieved");
     }
 
     @Override
