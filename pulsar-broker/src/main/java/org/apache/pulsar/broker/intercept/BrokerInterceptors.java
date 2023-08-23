@@ -188,10 +188,10 @@ public class BrokerInterceptors implements BrokerInterceptor {
 
     @Override
     public  void messageDispatched(ServerCnx cnx, Consumer consumer, long ledgerId,
-                                   long entryId, ByteBuf headersAndPayload) {
+                                   long entryId, ByteBuf headersAndPayload, int redeliveryCount) {
         if (interceptorsEnabled()) {
             for (BrokerInterceptorWithClassLoader value : interceptors.values()) {
-                value.messageDispatched(cnx, consumer, ledgerId, entryId, headersAndPayload);
+                value.messageDispatched(cnx, consumer, ledgerId, entryId, headersAndPayload, redeliveryCount);
             }
         }
     }

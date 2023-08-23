@@ -94,7 +94,7 @@ public class BrokerInterceptorWithClassLoaderTest {
             }
             @Override
             public void messageDispatched(ServerCnx cnx, Consumer consumer, long ledgerId,
-                                          long entryId, ByteBuf headersAndPayload) {
+                                          long entryId, ByteBuf headersAndPayload, int redeliveryCount) {
                 assertEquals(Thread.currentThread().getContextClassLoader(), narLoader);
             }
             @Override
@@ -162,7 +162,7 @@ public class BrokerInterceptorWithClassLoaderTest {
         assertEquals(Thread.currentThread().getContextClassLoader(), curClassLoader);
         // test messageDispatched
         brokerInterceptorWithClassLoader
-                .messageDispatched(mock(ServerCnx.class), mock(Consumer.class), 1, 1, null);
+                .messageDispatched(mock(ServerCnx.class), mock(Consumer.class), 1, 1, null, 0);
         assertEquals(Thread.currentThread().getContextClassLoader(), curClassLoader);
         // test messageProduced
         brokerInterceptorWithClassLoader

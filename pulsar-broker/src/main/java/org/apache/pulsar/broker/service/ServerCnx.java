@@ -3257,7 +3257,8 @@ public class ServerCnx extends PulsarHandler implements TransportCnx {
                 CompletableFuture<Consumer> consumerFuture = consumers.get(consumerId);
                 if (consumerFuture != null && consumerFuture.isDone() && !consumerFuture.isCompletedExceptionally()) {
                     Consumer consumer = consumerFuture.getNow(null);
-                    brokerInterceptor.messageDispatched(this, consumer, ledgerId, entryId, metadataAndPayload);
+                    brokerInterceptor.messageDispatched(this, consumer, ledgerId, entryId,
+                            metadataAndPayload, redeliveryCount);
                 }
             } catch (Exception e) {
                 log.error("Exception occur when intercept messages.", e);

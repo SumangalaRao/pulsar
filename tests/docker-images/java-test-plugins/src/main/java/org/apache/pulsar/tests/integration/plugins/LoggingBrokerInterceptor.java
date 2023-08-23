@@ -102,7 +102,7 @@ public class LoggingBrokerInterceptor implements BrokerInterceptor {
 
     @Override
     public void messageDispatched(ServerCnx cnx, Consumer consumer, long ledgerId, long entryId,
-                                  ByteBuf headersAndPayload) {
+                                  ByteBuf headersAndPayload, int redeliveryCount) {
         log.info("messageDispatched");
     }
 

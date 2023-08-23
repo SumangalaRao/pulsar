@@ -164,7 +164,7 @@ public interface BrokerInterceptor extends AutoCloseable {
      * @param headersAndPayload Data
      */
     default void messageDispatched(ServerCnx cnx, Consumer consumer, long ledgerId,
-                                   long entryId, ByteBuf headersAndPayload) {
+                                   long entryId, ByteBuf headersAndPayload, int redeliveryCount) {
     }
 
     /**
